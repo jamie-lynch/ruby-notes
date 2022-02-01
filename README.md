@@ -8,6 +8,7 @@ For now they all exist unorganised in the README but at some point I'll probably
 - [Type Conversions](#type-conversions)
 - [Class Reopening](#class-reopening)
 - [Refinements](#refinements)
+- [`__FILE__ == $0`](#__file__--0)
 
 ## Type Conversions
 
@@ -112,4 +113,47 @@ using DogFetch
 dog2 = Dog.new
 dog2.fetch
 # :bone
+```
+
+## `__FILE__ == $0`
+
+`__FILE__` is a magic variable which refers to the name of the current file. `$0` is a variable that refers to the name of the file used to launch the program. A common use case for this is to conditionally run some code if the current file is the one used to start the program.
+
+The following example defines a `Dog` class which may be imported and used by other the parts of the application. If the file is run directly, however, a new `Dog` would be instantiated and the `bark` method called.
+
+```ruby
+# dog.rb
+class Dog
+  def bark
+    puts "woof"
+  end
+end
+
+if __FILE__ == $0
+  dog = Dog.new
+  dog.bark
+end
+
+# person.rb
+require_relative "dog"
+
+class Person
+  def initialize(has_pet = true)
+    if has_pet
+      @pet = Dog.new
+    end
+  end
+
+  def pet
+    @pet
+  end
+end
+
+p = Person.new
+p.pet.bark
+# woof
+
+# terminal
+# $ ruby dog.rb
+# "woof"
 ```
