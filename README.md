@@ -9,6 +9,8 @@ For now they all exist unorganised in the README but at some point I'll probably
 - [Class Reopening](#class-reopening)
 - [Refinements](#refinements)
 - [`__FILE__ == $0`](#__file__--0)
+= [Constants vs Variables](#constants-vs-variables)
+- [Lots of things are methods](#lots-of-things-are-methods)
 
 ## Type Conversions
 
@@ -156,4 +158,62 @@ p.pet.bark
 # terminal
 # $ ruby dog.rb
 # "woof"
+```
+
+## Constants vs Variables
+
+Constants and variables are differentiated by the case of the first character. 
+
+```ruby
+my_variable = "hello"
+puts my_variable # hello
+my_variable = "world"
+puts my_variable # world
+
+MY_CONSTANT = "hello"
+puts MY_CONSTANT # hello
+MY_CONSTANT = "world"
+# 2: warning: already initialized constant B
+# 1: warning: previous definition of B was here
+```
+
+## Lots of things are methods
+
+A lot of the standard operations are methods in Ruby. For example, checking if two things are equal or accessing an item in a list.
+
+```ruby
+puts 1 == 1 # true
+puts 1.==(1) # true
+```
+
+```ruby
+my_hash = {
+  :hello => "world"
+}
+
+puts my_hash[:hello] # world
+puts my_hash.[](:hello) # world
+```
+
+This also means that we can implement that functionality for custom classes by implementing those methods. 
+
+```ruby
+class ListWithDefault
+  def initialize(items, default)
+    @items = items
+    @default = default
+  end
+
+  def [](index)
+    if index > @items.size - 1
+      @default
+    else
+      @items[index]
+    end
+  end
+end
+
+list = ListWithDefault::new([1,2,3], 42)
+puts list[0] # 1
+puts list[4] # 42
 ```
