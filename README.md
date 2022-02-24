@@ -11,6 +11,7 @@ For now they all exist unorganised in the README but at some point I'll probably
 - [`__FILE__ == $0`](#__file__--0)
 = [Constants vs Variables](#constants-vs-variables)
 - [Lots of things are methods](#lots-of-things-are-methods)
+- [Punctuation Convention](#punctuation-conventions)
 
 ## Type Conversions
 
@@ -216,4 +217,62 @@ end
 list = ListWithDefault::new([1,2,3], 42)
 puts list[0] # 1
 puts list[4] # 42
+```
+
+## Punctuation Conventions
+
+Methods names may end in `!`, `?` or `=`. By convention this means:
+
+### `!`
+
+The method modifies the receiver. Generally there will also be a non-bang method that returns the modified value and leaves the original as is.
+
+```ruby
+a = "test"
+
+a.upcase # "TEST"
+puts a # "test"
+
+a.upcase! # "TEST"
+puts a # "TEST"
+```
+
+In some cases, `!` may also represent that the method will throw and error if a problem occurs. 
+
+### `?`
+
+These methods return a truthy or falsly. This is often `true` or `false` but may also be an object that indicates truthy.
+
+```ruby
+a = "test"
+
+a.start_with? "t" # true
+```
+
+### `=`
+
+The `=` indicates an assignment method. This might be a method created by `attr_writer` or a custom implementation (for example, for an indirect setter).
+
+```ruby
+class Person
+  attr_accessor :first_name, :last_name
+
+  def full_name
+    @first_name + " " + @last_name
+  end
+
+  def full_name=(name)
+    @first_name, @last_name = name.split(" ")
+  end
+end
+
+p1 = Person.new
+p1.first_name= "John"
+p1.last_name= "Smith"
+puts p1.full_name # "John Smith"
+
+p2 = Person.new
+p2.full_name= "Jane Doe"
+puts p2.first_name # "Jane"
+puts p2.last_name # "Doe"
 ```
