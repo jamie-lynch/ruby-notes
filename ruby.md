@@ -11,6 +11,8 @@
 - [Punctuation Convention](#punctuation-conventions)
 - [`.methods`](#methods)
 - [pry](#pry)
+- [Modules](#modules)
+- [Static Methods and Variables](#static-methods-and-variables)
 
 
 ## Type Conversions
@@ -300,3 +302,92 @@ a.methods
 [Pry](https://github.com/pry/pry) is an interactive console that allows you to debug and inspect what's going on inside a Ruby application. Add `binding.pry` statement(s) at the point where you want to be able to debug, and then use `next` or `step` to step through the code, `$` and `?` to see docs and source code, and `play -l` to execute a particular line without moving forwards.
 
 Other useful tips are listed in this [Pry cheatsheet](https://gist.github.com/lfender6445/9919357) and there's even more information in the [Pry Docs](http://pry.github.io/).
+
+## Modules
+
+Modules are a way of grouping a number of static methods. They can then be included within classes to access those methods. 
+
+```ruby
+module Greetings
+  def say_hello_to(name)
+    puts "Hello, %s" % name
+  end
+end
+
+class Robot
+  include Greetings
+end
+
+r = Robot.new
+r.say_hello_to "Gary"
+```
+
+## Static Methods and Variables
+
+### Methods
+
+Defining static methods on classes can be done by prepending the method name with `self.`. Whilst it is possible to do this with any method, [`Module`s](#modules) are generally a better way to group a collection of static methods, so this technique is more useful for cases such as defining factory methods.
+
+```ruby
+class Person
+  attr_reader :first_name, :last_name
+  
+  def initialize(first_name, last_name)
+    @first_name = first_name
+    @last_name = last_name
+  end
+  
+  def self.from_full_name(name)
+    first_name, last_name = name.split(" ")
+    new(first_name, last_name)
+  end
+end
+
+p = Person.from_full_name("Jane Doe")
+puts p.first_name # Jane
+puts p.last_name # Doe
+```
+
+### Variables
+
+Ruby has class variables and class instance variables which both behave somewhat like static variables in other languages. The key difference in terms of use case is that class variables are passed along the inheritance chain whereas class instances variables are not.
+
+```ruby
+class GeneralContainer
+  @count = 0            # Class instance variable
+  @@total_count = 0     # Class variable
+
+  def initialize
+    self.class.count += 1
+    @@total_count += 1
+  end
+
+  # The getters must be defined manually for both class and class instance variables
+  def self.count
+    @count
+  end
+
+  def self.total_count
+    @@total_count
+  end
+
+  private 
+
+  # This has to be implemented so that @count can be incremeneted
+  def self.count=(value)
+      @count = value
+  end
+end
+
+class SpecificContainer < GeneralContainer
+  @count = 0
+end
+
+GeneralContainer.new
+GeneralContainer.new
+SpecificContainer.new
+
+puts GeneralContainer.count         # 2
+puts SpecificContainer.count        # 1
+puts GeneralContainer.total_count   # 3
+```

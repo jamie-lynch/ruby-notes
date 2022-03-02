@@ -15,6 +15,8 @@ For now they all exist unorganised in the README but at some point I'll probably
   - [Punctuation Convention](./ruby.md#punctuation-conventions)
   - [`.methods`](./ruby.md#methods)
   - [pry](./ruby.md#pry)
+  - [Modules](./ruby.md#modules)
+  - [Static Methods and Variables](./ruby.md#static-methods-and-variables)
 - [Rails](./rails.md)
   - [Autoloading](./rails.md#autoloading)
   - [Console](./rails.md#console)
