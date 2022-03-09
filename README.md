@@ -1,7 +1,6 @@
 # Ruby Notes
 
-This project contains a series of notes and snippets that I've collected as I learn Ruby. 
-For now they all exist unorganised in the README but at some point I'll probably organise them a bit better. 
+This project contains a series of notes and snippets that I've collected as I learn Ruby.
 
 ## Contents
 
