@@ -20,4 +20,6 @@ For now they all exist unorganised in the README but at some point I'll probably
 - [Rails](./rails.md)
   - [Autoloading](./rails.md#autoloading)
   - [Console](./rails.md#console)
+  - [Routing](./rails.md#routing)
+  - [Generators](./rails.md#generators)
   
